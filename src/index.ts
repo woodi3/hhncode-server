@@ -26,6 +26,14 @@ connect().then((db) => {
     // CORS Middleware
     app.use(cors());
 
+    // set no-cache
+    app.use((_, res, next) => {
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+        res.header('Expires', '-1');
+        res.header('Pragma', 'no-cache');
+        next();
+    });
+
     // Helmet Middleware
     // Helmet will set up some security headers for us
     app.use(helmet());
