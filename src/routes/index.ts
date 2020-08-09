@@ -10,3 +10,4 @@ export * from './privacy-policy';
 export * from './music';
 export * from './quote';
 export * from './receipts';
+export * from './log';

@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { IDeleteResponse } from '../database/types';
-import express from 'express';
 import * as core from 'express-serve-static-core';
 
 type Payload = string | Record<string, unknown> | Buffer;
