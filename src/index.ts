@@ -13,9 +13,10 @@ import * as routes from './routes';
 const port = process.env.PORT || environment.SERVER_PORT;
 const app = express();
 
-// connect to db
-print('Connecting to DB', '');
-connect().then((db) => {
+(async () => {
+    // connect to db
+    print('Connecting to DB', '');
+    const db = await connect();
     print('Setting up Middlewares', '');
     // Body Parser Middleware
     const bodyOptions = {
@@ -59,12 +60,17 @@ connect().then((db) => {
     routes.music(app, db);
     routes.quote(app, db);
     routes.receipt(app, db);
+    routes.log(app, db);
 
     // start the Express server
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         print('Server Started', `Listening on port: ${port}`);
+        app.emit('ready');
     });
-});
+    app.on('test_close', () => {
+        server.close();
+    });
+})();
 
 function print(stage: string, message: string): void {
     printHeader(stage);
@@ -87,3 +93,5 @@ function printHeader(stage: string): void {
 function printDivider(): void {
     console.log('==================================');
 }
+
+export default app;
