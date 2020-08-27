@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { IDeleteResponse } from '../database/types';
-import express from 'express';
 import * as core from 'express-serve-static-core';
 
 type Payload = string | Record<string, unknown> | Buffer;
@@ -34,7 +33,7 @@ type Entity =
     | 'receipt'
     | 'receipts';
 export const buildApiPrefix = (entity: Entity, url: string): string => {
-    return `/api/${entity}${url}`;
+    return `/v1/${entity}${url}`;
 };
 
 const SALT_ROUNDS = 10;

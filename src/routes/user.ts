@@ -12,7 +12,7 @@ import EmailService, { IEmail, EmailType } from '../services/email.service';
 import { IReceiptDocument, IReceipt } from '../database/receipts/receipts.types';
 import ReceiptService from '../services/receipt.service';
 
-const CHARGE = 399;
+const CHARGE = 400;
 
 const stripe = new Stripe(environment.STRIPE_KEY, {
     apiVersion: '2020-03-02',
@@ -40,10 +40,10 @@ export const user = (app: express.Application, db: DB): void => {
 
     app.get(buildApiPrefix('users', ''), passport.authenticate('adminJWT', { session: false }), getUsersHandler);
 
-    app.get(buildApiPrefix('user', '/charge'), chargeHandler);
-
     // USERS POST ROUTES
     app.post(buildApiPrefix('user', '/login'), loginHandler);
+
+    app.post(buildApiPrefix('user', '/charge'), chargeHandler);
 
     // client register
     app.post(buildApiPrefix('user', '/register'), registerHandler);
@@ -217,10 +217,10 @@ const validatePasswordHandler = async (req: Request, res: Response) => {
     }
 };
 
-const chargeHandler = async (_: Request, res: Response) => {
+const chargeHandler = async (req: Request, res: Response) => {
     try {
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: CHARGE,
+            amount: CHARGE * req.body.quantity,
             currency: 'usd',
             // Verify your integration in this guide by including this parameter
             metadata: { integration_check: 'accept_a_payment' },

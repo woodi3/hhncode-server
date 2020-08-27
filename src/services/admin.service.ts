@@ -4,7 +4,7 @@ import { hashPassword, createToken } from '../utils';
 import { DB } from '../database/types';
 import environment from '../utils/environment';
 
-const ADMIN_KEY = environment.ADMIN_JWT_KEY || 'some_admin_key';
+export const ADMIN_KEY = environment.ADMIN_JWT_KEY || 'some_admin_key';
 
 type AdminWithToken = {
     access_token: string;
