@@ -1,1 +1,2 @@
-web: node lib/index.js
+web: npm run build
+web: node ./lib/index.js
