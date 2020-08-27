@@ -33,7 +33,7 @@ type Entity =
     | 'receipt'
     | 'receipts';
 export const buildApiPrefix = (entity: Entity, url: string): string => {
-    return `/api/${entity}${url}`;
+    return `/v1/${entity}${url}`;
 };
 
 const SALT_ROUNDS = 10;

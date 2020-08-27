@@ -4,7 +4,7 @@ import { buildApiPrefix, cleanQuery, didDelete } from '../../src/utils';
 describe('Unit | Utils methods', () => {
     describe('buildApiPrefix', () => {
         it('should return api prefix correctly', () => {
-            const expectedVal = '/api/admin/checkToken';
+            const expectedVal = '/v1/admin/checkToken';
             equal(buildApiPrefix('admin', '/checkToken'), expectedVal);
         });
     });
