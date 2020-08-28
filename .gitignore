@@ -2,6 +2,7 @@
 node_modules
 /dist
 /lib
+/db_imports
 
 # local env files
 .env
