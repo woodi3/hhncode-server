@@ -17,7 +17,9 @@
     "createUsers": "npm run deleteUsers && babel-node -x \".ts\" src/scripts/createUsers.ts",
     "deleteUsers": "babel-node -x \".ts\" src/scripts/deleteUsers.ts",
     "createTags": "npm run deleteTags && babel-node -x \".ts\" src/scripts/createTags.ts",
-    "deleteTags": "babel-node -x \".ts\" src/scripts/deleteTags.ts"
+    "deleteTags": "babel-node -x \".ts\" src/scripts/deleteTags.ts",
+    "db:import": "echo \"mongoimport --uri mongodb+srv://alex:Latias437%24@hhncode.8dx79.mongodb.net/hhncode --collection <COLLECTION> --type json --file <FILENAME>\"",
+    "db:export": "echo \"mongoexport -d hhncode -c <COLLECTION> -o ./db_imports/<FILENAME>.json\""
   },
   "author": "Alex Wood",
   "license": "ISC",
