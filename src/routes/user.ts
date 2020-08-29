@@ -127,12 +127,11 @@ const registerHandler = async (req: Request, res: Response) => {
         const user = await userService.save(req.body);
         if (user) {
             const email: IEmail = {
-                body: 'Some body', // TODO
-                title: 'Some title', // TODO
-                from: environment.FROM_EMAIL,
+                subject: 'Account Registration',
                 to: user.email,
                 type: EmailType.UserRegistration,
             };
+
             emailService.sendEmail(email);
 
             const result = userService.login(user);
@@ -154,9 +153,7 @@ const subscribeHandler = async (req: Request, res: Response) => {
         const user = await userService.save(req.body);
         if (user) {
             const email: IEmail = {
-                body: 'Some body', // TODO
-                title: 'Some title', // TODO
-                from: environment.FROM_EMAIL,
+                subject: 'New Subscriber',
                 to: user.email,
                 type: EmailType.UserSubscription,
             };
@@ -189,9 +186,7 @@ const updateHandler = async (req: Request, res: Response) => {
 
         if (user) {
             const email: IEmail = {
-                body: 'Some body', // TODO
-                title: 'Some title', // TODO
-                from: environment.FROM_EMAIL,
+                subject: 'Account Change',
                 to: user.email,
                 type: EmailType.UserAccountChange,
             };
@@ -246,14 +241,14 @@ const receiptHandler = async (req: Request, res: Response) => {
             // send email thanking user for donation
             const newReceipt = await receiptService.save(<IReceiptDocument>receipt);
             if (newReceipt) {
-                const emailToSend: IEmail = {
-                    body: 'Some body', // TODO
-                    title: 'Some title', // TODO
-                    from: environment.FROM_EMAIL,
-                    to: email || 'test@gmail.com',
-                    type: EmailType.UserDontationReceipt,
-                };
-                emailService.sendEmail(emailToSend);
+                if (!!email) {
+                    const emailToSend: IEmail = {
+                        subject: 'Donation Receipt',
+                        to: email,
+                        type: EmailType.UserDontationReceipt,
+                    };
+                    emailService.sendEmail(emailToSend);
+                }
             }
         }
 
@@ -271,9 +266,7 @@ const deleteHandler = async (req: Request, res: Response) => {
             const deleteResult = await userService.deleteOne(req.query);
             if (didDelete(deleteResult) && user) {
                 const email: IEmail = {
-                    body: 'Some body', // TODO
-                    title: 'Some title', // TODO
-                    from: environment.FROM_EMAIL,
+                    subject: 'Account Deletion',
                     to: user.email,
                     type: EmailType.UserAccountDeletion,
                 };
@@ -295,9 +288,7 @@ const unsubscribeHandler = async (req: Request, res: Response) => {
             const deleteResult = await userService.deleteOne(query);
             if (didDelete(deleteResult)) {
                 const email: IEmail = {
-                    body: 'Some body', // TODO
-                    title: 'Some title', // TODO
-                    from: environment.FROM_EMAIL,
+                    subject: 'Unsubscribe',
                     to: req.body.email,
                     type: EmailType.UserAccountDeletion,
                 };
