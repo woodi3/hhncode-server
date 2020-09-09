@@ -633,7 +633,7 @@ export function newPostEmail(date: string, showSubscribeLink: boolean, post?: IP
     </div>
     <div class="copyright flex pl-6 pr-6">
       <p class="text font-sm"> © 2020 Hip Hop and Code. All rights reserved </p>
-      ${showSubscribeLink ? `<a class="unsubscribe" href="https://www.hhncode.com/login">Unsubscribe</a>` : ''}
+      ${showSubscribeLink ? `<a class="unsubscribe" href="https://www.hhncode.com/unsubscribe">Unsubscribe</a>` : ''}
     </div>
   </body>
 </html>`
@@ -942,7 +942,7 @@ function genericTemplate(
         </div>
         <div class="copyright flex pl-6 pr-6">
         <p class="text font-sm"> © 2020 Hip Hop and Code. All rights reserved </p>
-        ${showSubscribeLink ? `<a class="unsubscribe" href="https://www.hhncode.com/login">Unsubscribe</a>` : ''}
+        ${showSubscribeLink ? `<a class="unsubscribe" href="https://www.hhncode.com/unsubscribe">Unsubscribe</a>` : ''}
         </div>
     </body>
     </html>

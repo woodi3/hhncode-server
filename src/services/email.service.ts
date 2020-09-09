@@ -48,7 +48,7 @@ export default class EmailService implements IEmailService {
             case EmailType.CommentReport:
                 return await this._sendCommentReportEmail(email);
             case EmailType.UserDontationReceipt:
-                return await this._sendUserDontationReceiptEmail(email);
+                return await this._sendUserDonationReceiptEmail(email);
             default:
                 console.log('IEmail type not defined');
         }
@@ -59,19 +59,26 @@ export default class EmailService implements IEmailService {
          * TODO
          * Modify the port and email stuff based on what GoDaddy says
          */
+        // const mailerConfig = {
+        //     host: 'smtp.office365.com',
+        //     secureConnection: true,
+        //     port: 587,
+        //     auth: {
+        //         user: environment.FROM_EMAIL,
+        //         pass: 'password',
+        //     },
+        // };
         const mailerConfig = {
-            host: 'smtp.office365.com',
-            secureConnection: true,
-            port: 587,
+            service: 'gmail',
             auth: {
-                user: environment.FROM_EMAIL,
-                pass: 'password',
+                user: 'woodawilliam@gmail.com',
+                pass: 'zxqufdzfmyslownd',
             },
         };
         const transporter = nodemailer.createTransport(mailerConfig);
 
         const mailOptions = {
-            from: mailerConfig.auth.user,
+            from: `Alex at HHnCode <${mailerConfig.auth.user}>`,
             to: email.to,
             subject: email.subject,
             html,
@@ -147,7 +154,7 @@ export default class EmailService implements IEmailService {
     }
 
     private async _sendUserAccountChangeEmail(email: IEmail): Promise<boolean> {
-        const title = 'Your account setings were changed.';
+        const title = 'Your account settings were changed.';
         const linkText = 'View your account';
         const linkUrl = 'https://www.hhncode.com/account-settings';
         const showActionLink = true;
@@ -210,7 +217,7 @@ export default class EmailService implements IEmailService {
         return false;
     }
 
-    private async _sendUserDontationReceiptEmail(email: IEmail): Promise<boolean> {
+    private async _sendUserDonationReceiptEmail(email: IEmail): Promise<boolean> {
         const receipt = !!email.receipt ? email.receipt : null;
         if (receipt) {
             const amount = receipt.amount / 100;

@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 // import request from 'request';
-import { DB } from '../database/types';
+import { DB, IDeleteResponse } from '../database/types';
 import UserService from '../services/user.service';
 import { buildApiPrefix, didDelete } from '../utils';
 import environment from '../utils/environment';
@@ -148,8 +148,8 @@ const registerHandler = async (req: Request, res: Response) => {
 const subscribeHandler = async (req: Request, res: Response) => {
     // subscribe user
     try {
-        // TODO send an email
         req.body.role = 'subscriber';
+        req.body.notify = true;
         const user = await userService.save(req.body);
         if (user) {
             const email: IEmail = {
@@ -284,8 +284,27 @@ const deleteHandler = async (req: Request, res: Response) => {
 const unsubscribeHandler = async (req: Request, res: Response) => {
     try {
         if (req.body.email) {
-            const query: Query = { email: req.body.email, role: 'subscriber' };
-            const deleteResult = await userService.deleteOne(query);
+            const query: Query = { email: req.body.email };
+            let user = await userService.findOneWithQuery(query, false);
+            let deleteResult: IDeleteResponse = {};
+            if (user) {
+                if (user.role == 'subscriber') {
+                    query.role = 'subscriber';
+                    deleteResult = await userService.deleteOne(query);
+                } else if (user.role == 'user') {
+                    user.notify = false;
+                    user = await userService.save(user);
+                    if (user) {
+                        const email: IEmail = {
+                            subject: 'Account Change',
+                            to: user.email,
+                            type: EmailType.UserAccountChange,
+                        };
+                        emailService.sendEmail(email);
+                        return res.json({ success: true, message: `Unsubscribed user successfully.` });
+                    }
+                }
+            }
             if (didDelete(deleteResult)) {
                 const email: IEmail = {
                     subject: 'Unsubscribe',
