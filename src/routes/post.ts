@@ -129,20 +129,15 @@ const searchPostHandler = async (req: Request, res: Response) => {
 
 const createPostHandler = async (req: Request, res: Response) => {
     try {
-        const isNewPost = req.body._id === undefined;
         const post = await postService.save(req.body);
 
-        if (isNewPost && post && !post.isDraft) {
-            // TODO send email to all users and subscribers
-            // only send to users that have `notify` set to true
+        if (post && post.isDraft === false) {
             const users = await userService.findAll({ notify: true });
             if (users.length > 0) {
                 users.forEach((user) => {
                     const email: IEmail = {
-                        from: environment.FROM_EMAIL,
                         to: user.email,
-                        body: 'Some body', //TODO
-                        title: 'Some title', //TODO
+                        subject: 'New Post',
                         type: EmailType.NewPost,
                         post,
                     };
