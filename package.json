@@ -4,6 +4,7 @@
   "description": "HipHop n Code server",
   "main": "src/index.ts",
   "scripts": {
+    "deploy:prod": "git push heroku master",
     "test": "mocha",
     "integration": "mocha --exit --file test/integration/setup.ts test/integration",
     "unit": "mocha test/unit",

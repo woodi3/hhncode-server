@@ -29,10 +29,8 @@ const createReportHandler = async (req: Request, res: Response) => {
             await comment.save();
             const email: IEmail = {
                 to: emailAddress,
-                from: environment.FROM_EMAIL,
-                title: 'Some title', //TODO
-                body: 'Some body', //TODO
                 type: EmailType.CommentReport,
+                subject: '',
             };
             emailService.sendEmail(email);
         }
